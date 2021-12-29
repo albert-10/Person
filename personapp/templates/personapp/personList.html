@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Person list</title>
+        <style>
+            table, th, td {
+             border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+
+        <table style="border: 1px solid black;">
+            <tr>
+                <td>Name</td>
+                <td>gender</td>
+                <td>date_of_birth</td>
+                <td>father</td>
+                <td>mother</td>
+                <td>oldest child</td>
+                <td>children age summation</td>
+                <td>male children amount</td>
+                <td>female children amount</td>
+            </tr>
+            
+                {% for person in object_list %}
+                <tr style="border: 1px solid black;">
+                    <td>{{person.name}}</td>
+                    <td>{{person.gender}}</td>
+                    <td>{{person.date_of_birth}}</td>
+                    <td>{{person.father}}</td>
+                    <td>{{person.mother}}</td>
+                    <td>{{person.oldest_child}}</td>
+                    <td>{{person.total_age_children}}</td>
+                    <td>{{person.children_male_amount}}</td>
+                    <td>{{person.children_female_amount}}</td>
+                </tr>
+                {% endfor %}            
+        </table>      
+    </body>
+</html>
