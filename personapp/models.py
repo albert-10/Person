@@ -1,4 +1,5 @@
 from django.db import models
+from django.shortcuts import reverse
 
 # Create your models here.
 
@@ -16,10 +17,10 @@ class Person(models.Model):
     mother = models.ForeignKey('self', null=True, blank=True, related_name='children_mom', on_delete=models.SET_NULL)
 
     def __str__(self):        
-        return self.name
+        return self.name    
 
-    def hijos(self):
-        return self.children_dad.all()
+    def get_absolute_url(self):
+        return reverse("personapp:personEdit", kwargs={'pk': self.id})
 
     class Meta:
         ordering = ['date_of_birth']

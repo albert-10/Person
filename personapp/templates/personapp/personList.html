@@ -12,7 +12,7 @@
         </style>
     </head>
     <body>
-
+        <!-- Table of Persons -->
         <table style="border: 1px solid black;">
             <tr>
                 <td>Name</td>
@@ -24,6 +24,7 @@
                 <td>children age summation</td>
                 <td>male children amount</td>
                 <td>female children amount</td>
+                <td>Operaciones</td>
             </tr>
             
                 {% for person in object_list %}
@@ -37,6 +38,7 @@
                     <td>{{person.total_age_children}}</td>
                     <td>{{person.children_male_amount}}</td>
                     <td>{{person.children_female_amount}}</td>
+                    <td><a href="{% url 'personapp:personEdit' person.id %}">Edit</a></td>
                 </tr>
                 {% endfor %}            
         </table>      
