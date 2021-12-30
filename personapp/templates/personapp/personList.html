@@ -24,11 +24,11 @@
                 <td>children age summation</td>
                 <td>male children amount</td>
                 <td>female children amount</td>
-                <td>Operaciones</td>
+                <td colspan="2">Operaciones</td>
             </tr>
             
                 {% for person in object_list %}
-                <tr style="border: 1px solid black;">
+                <tr>
                     <td>{{person.name}}</td>
                     <td>{{person.gender}}</td>
                     <td>{{person.date_of_birth}}</td>
@@ -39,6 +39,12 @@
                     <td>{{person.children_male_amount}}</td>
                     <td>{{person.children_female_amount}}</td>
                     <td><a href="{% url 'personapp:personEdit' person.id %}">Edit</a></td>
+                    <td>                        
+                        <form method="post" action="{% url 'personapp:personDelete' person.id %}">
+                            {% csrf_token %}               
+                            <button id='submit' type='submit'>Delete</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}            
         </table>      

@@ -1,14 +1,16 @@
 from datetime import date
+
 from django.db.models.aggregates import Count
 from django.db.models.expressions import F
 from django.shortcuts import reverse
 from django.db.models.functions import Coalesce
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Sum, Count, Prefetch
 
 from .models import Person
-from .forms import PersonForm
+from .forms import PersonForm, PersonEditForm
 
 class PersonListView(generic.ListView):    
     template_name = 'personapp/personList.html'    
@@ -49,7 +51,7 @@ class PersonListView(generic.ListView):
             
             if person.gender == 'male':
                 person.children_female_amount = len(person.children_dad_female)
-                person.children_male_amount = len(person.children_dad_male)                
+                person.children_male_amount = len(person.children_dad_male)                               
             else:                
                 person.children_female_amount = len(person.children_mom_female)
                 person.children_male_amount = len(person.children_mom_male)     
@@ -67,7 +69,7 @@ class PersonInsertView(CreateView):
 class PersonEditView(UpdateView):
     template_name = 'personapp/personEdit.html'
     model = Person
-    form_class = PersonForm
+    form_class = PersonEditForm
 
     # This function return a person as a context with the added atributes: total_age_children, oldest_child
     # and number of male children and female children
@@ -110,4 +112,9 @@ class PersonEditView(UpdateView):
 
         context['person'] = person
         return context
+
+class PersonDeleteView(DeleteView):    
+    model = Person
+    success_url = reverse_lazy('personapp:personList')
+    
     
