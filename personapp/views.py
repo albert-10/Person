@@ -10,7 +10,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Sum, Count, Prefetch
 
 from .models import Person
-from .forms import PersonForm, PersonEditForm
+from .forms import PersonInsertForm, PersonEditForm
 
 class PersonListView(generic.ListView):    
     template_name = 'personapp/personList.html'    
@@ -38,7 +38,8 @@ class PersonListView(generic.ListView):
                 # Annotating total age children    
                 total_age_children=F('years_amount')-F('total_years'))
 
-         # Annotating oldest_child, children_male_amount and children_male_amount
+        # Annotating oldest_child, children_female_amount and children_male_amount. Always taking into account whether a person is male or female.
+        # Person are defalut ordered by date_of_birth, always the first children will be the oldest
 
         for person in persons:                         
             if person.children_mom.all().count() > 0:
@@ -54,13 +55,13 @@ class PersonListView(generic.ListView):
                 person.children_male_amount = len(person.children_dad_male)                               
             else:                
                 person.children_female_amount = len(person.children_mom_female)
-                person.children_male_amount = len(person.children_mom_male)     
-       
+                person.children_male_amount = len(person.children_mom_male)
+        
         return persons
 
 class PersonInsertView(CreateView):
     template_name = 'personapp/personInsert.html'
-    form_class = PersonForm
+    form_class = PersonInsertForm
     queryset = Person.objects.all()
 
     def get_success_url(self):
@@ -71,7 +72,7 @@ class PersonEditView(UpdateView):
     model = Person
     form_class = PersonEditForm
 
-    # This function return a person as a context with the added atributes: total_age_children, oldest_child
+    # This function return the attributes of the person to edit as a context: total_age_children, oldest_child
     # and number of male children and female children
     
     def get_context_data(self, **kwargs):             
@@ -92,7 +93,9 @@ class PersonEditView(UpdateView):
                 # Annotating total age children    
                 total_age_children=F('years_amount')-F('total_years'))
 
-        # Annotating oldest_child, children_male_amount and children_male_amount
+        # Annotating oldest_child, children_male_amount and children_male_amount. Always taking into account whether a person is male or female.
+        # Person are defalut ordered by date_of_birth, always the first children will be the oldest
+
         person = persons[0]
                                 
         if person.children_mom.all().count() > 0:
